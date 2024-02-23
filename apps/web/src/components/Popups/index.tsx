@@ -1,11 +1,11 @@
-import { useAccountDrawer } from 'components/AccountDrawer/MiniPortfolio/hooks'
-import { useActivePopups } from 'state/application/hooks'
-import styled from 'styled-components'
-import { Z_INDEX } from 'theme/zIndex'
+import { useAccountDrawer } from "components/AccountDrawer/MiniPortfolio/hooks";
+import { useActivePopups } from "state/application/hooks";
+import styled from "styled-components";
+import { Z_INDEX } from "theme/zIndex";
 
-import { AutoColumn } from '../Column'
-import ClaimPopup from './ClaimPopup'
-import PopupItem from './PopupItem'
+import { AutoColumn } from "../Column";
+import ClaimPopup from "./ClaimPopup";
+import PopupItem from "./PopupItem";
 
 const MobilePopupWrapper = styled.div`
   position: relative;
@@ -19,7 +19,7 @@ const MobilePopupWrapper = styled.div`
     display: block;
     padding-top: 20px;
   `};
-`
+`;
 
 const MobilePopupInner = styled.div`
   height: 99%;
@@ -31,10 +31,10 @@ const MobilePopupInner = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
-`
+`;
 
 const FixedPopupColumn = styled(AutoColumn)<{
-  drawerOpen: boolean
+  drawerOpen: boolean;
 }>`
   position: fixed;
   top: ${({ drawerOpen }) => `${64 + (drawerOpen ? -50 : 0)}px`};
@@ -42,25 +42,35 @@ const FixedPopupColumn = styled(AutoColumn)<{
   max-width: 348px !important;
   width: 100%;
   z-index: ${Z_INDEX.modal};
-  transition: ${({ theme }) => `top ${theme.transition.timing.inOut} ${theme.transition.duration.slow}`};
+  transition: ${({ theme }) =>
+    `top ${theme.transition.timing.inOut} ${theme.transition.duration.slow}`};
 
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToSmall`
     display: none;
   `};
-`
+`;
 
 export default function Popups() {
-  const [isAccountDrawerOpen] = useAccountDrawer()
+  const [isAccountDrawerOpen] = useAccountDrawer();
 
   // get all popups
-  const activePopups = useActivePopups()
+  const activePopups = useActivePopups();
 
   return (
     <>
-      <FixedPopupColumn gap="20px" drawerOpen={isAccountDrawerOpen} data-testid="popups">
+      <FixedPopupColumn
+        gap="20px"
+        drawerOpen={isAccountDrawerOpen}
+        data-testid="popups"
+      >
         <ClaimPopup />
         {activePopups.map((item) => (
-          <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={item.removeAfterMs} />
+          <PopupItem
+            key={item.key}
+            content={item.content}
+            popKey={item.key}
+            removeAfterMs={item.removeAfterMs}
+          />
         ))}
       </FixedPopupColumn>
       {activePopups?.length > 0 && (
@@ -70,11 +80,16 @@ export default function Popups() {
               .slice(0)
               .reverse()
               .map((item) => (
-                <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={item.removeAfterMs} />
+                <PopupItem
+                  key={item.key}
+                  content={item.content}
+                  popKey={item.key}
+                  removeAfterMs={item.removeAfterMs}
+                />
               ))}
           </MobilePopupInner>
         </MobilePopupWrapper>
       )}
     </>
-  )
+  );
 }
